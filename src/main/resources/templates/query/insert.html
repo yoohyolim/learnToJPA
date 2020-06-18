@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+	<meta charset="UTF-8">
+	<title>JPA 쿼리테스트</title>
+	<style>
+		.container { width: 550px; height: 280px; position: absolute; }
+		.container .input_area { position: relative; height: 260px; padding-left: 25px; }
+		.container .input_area .input_box {margin-bottom: 15px; display: block; position: relative; width: auto; height: 30px;}
+		.container .input_area .input_box > p > span { width: 200px; }
+		.container .input_area .input_box > p > label > input { width: 300px; height: 30px; }
+		.container .input_area .input_box > p > label > textarea { width: 300px; height: 150px; }
+		.astro { color: #FFA500; font-weight: bold;}
+
+		.container .button_area { position: relative; text-align: center;}
+		.container .button_area input[type=submit] { background-color: #FFE4C4; border : none; width: 80px; height: 30px; color: #A9A9A9; font-size: 12px;}
+		.fl {float: left;}
+	</style>
+</head>
+<body>
+<h2>JPA INSERT 쿼리테스트</h2>
+<form id="saveForm" name="saveForm" action="/jpa/test/save" method="post" onsubmit="return validate();">
+	<div class="container">
+		<div class="input_area">
+			<div class="input_box">
+				<p>
+					<span class="fl">작성자<span class="astro">*</span></span>
+					<label for="writer" class="fl">
+						<input type="text" id="writer" name="writer" maxlength="50" placeholder="작성자의 이름을 적어주세요. 최대 50글자">
+					</label>
+				</p>
+			</div>
+			<div class="input_box">
+				<p>
+					<span class="fl">제목<span class="astro">*</span></span>
+					<label for="title" class="fl">
+						<input type="text" id="title" name="title" maxlength="50" placeholder="제목을 적어주세요. 최대 50글자">
+					</label>
+				</p>
+			</div>
+			<div class="input_box">
+				<p>
+					<span class="fl">내용<span class="astro">*</span> <span id="contentsLength">0/255</span></span>
+					<label for="contents" class="fl">
+						<textarea id="contents" name="contents" maxlength="255" placeholder="내용을 적어주세요. 최대 255글자"></textarea>
+					</label>
+				</p>
+			</div>
+		</div>
+		<div class="button_area">
+			<input type="submit" name="submit" value="등록">
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#contents').on("keyup", function(){
+			$('#contentsLength').text($(this).val().length + "/255");
+		})
+	});
+	function validate(){
+		if( !stringCheck($('#writer').val()) ){
+			alert("작성자는 필수입력입니다.");
+			$('#writer').focus();
+			return false;
+		}
+		if( !stringCheck($('#title').val()) ){
+			alert("제목은 필수입력입니다.");
+			$('#title').focus();
+			return false;
+		}
+		if( !stringCheck($('#contents').val()) ){
+			alert("내용은 필수입력입니다.");
+			$('#contents').focus();
+			return false;
+		}
+		return true;
+	}
+
+	function stringCheck(str){
+		if(str == undefined) return false;
+		if(str == null) return false;
+		if(str == "") return false;
+		return true;
+	}
+</script>
+</body>
+</html>
