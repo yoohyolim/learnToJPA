@@ -1,11 +1,15 @@
 package com.learn.jpa.service;
 
 import com.learn.jpa.entity.QueryTest;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
 public interface QueryService {
 
 	QueryTest save(QueryTest queryTest);
+
+	List<QueryTest> read();
+
+	void delete(long seq);
 
 }

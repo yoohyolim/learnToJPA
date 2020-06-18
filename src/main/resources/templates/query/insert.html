@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org"  xml:lang="ko">
 <head>
 	<meta charset="UTF-8">
 	<title>JPA 쿼리테스트</title>
@@ -19,7 +19,7 @@
 </head>
 <body>
 <h2>JPA INSERT 쿼리테스트</h2>
-<form id="saveForm" name="saveForm" action="/jpa/test/save" method="post" onsubmit="return validate();">
+<form id="saveForm" name="saveForm" th:action="/jpa/test/save" method="post" onsubmit="return validate();">
 	<div class="container">
 		<div class="input_area">
 			<div class="input_box">

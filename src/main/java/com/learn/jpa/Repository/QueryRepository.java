@@ -4,10 +4,8 @@ import com.learn.jpa.entity.QueryTest;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("QueryRepository")
 public interface QueryRepository extends CrudRepository<QueryTest, Long> {
 
-	@Override
-	<S extends QueryTest> S save(S entity);
-
+	void deleteBySeq(long seq);
 }
