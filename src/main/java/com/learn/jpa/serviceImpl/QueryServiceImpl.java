@@ -35,10 +35,18 @@ public class QueryServiceImpl implements QueryService {
 	public List<QueryTest> read(){ return (List<QueryTest>) queryRepository.findAll(); }
 
 	/**
-	 * 특정데이터 삭제
+	 * 단일 데이터 삭제
 	 * @param seq
 	 */
 	@Override
 	public void delete(long seq){ queryRepository.deleteBySeq(seq); }
+
+	/**
+	 * 단일 데이터 불러오기
+	 * @param seq
+	 * @return
+	 */
+	@Override
+	public QueryTest findBySeq(long seq){ return queryRepository.findBySeq(seq); }
 
 }

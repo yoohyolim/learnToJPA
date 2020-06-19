@@ -4,11 +4,15 @@ import com.learn.jpa.entity.QueryTest;
 import com.learn.jpa.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/jpa/test")
+@RequestMapping("/jpa")
 public class QueryController {
 
 	private final QueryService queryService;
@@ -18,24 +22,30 @@ public class QueryController {
 		this.queryService = queryService;
 	}
 
-
-	@RequestMapping("/insert")
-	public ModelAndView main(){
-
-		return new ModelAndView("/query/insert");
-	}
-
-	@RequestMapping("/save")
-	public ModelAndView save(QueryTest queryTest){
-		ModelAndView mv = new ModelAndView("/query/result");
+	/**
+	 * 데이터 저장 Ajax
+	 * @param queryTest
+	 * @return
+	 */
+	@RequestMapping("/saveAjax")
+	public boolean save(QueryTest queryTest){
 		QueryTest result = queryService.save(queryTest);
 		boolean resultBoolean = false;
 		if(result != null){
 			resultBoolean = true;
 		}
-		mv.addObject("booleanResult", resultBoolean);
-		mv.addObject("result", result);
-		return mv;
+		return resultBoolean;
+	}
+
+	/**
+	 * 단일 데이터 불러오기 Ajax
+	 * @param seq
+	 * @return
+	 */
+	@RequestMapping("/findBySeq")
+	@ResponseBody
+	public QueryTest findBySeq(long seq){
+		return queryService.findBySeq(seq);
 	}
 
 }

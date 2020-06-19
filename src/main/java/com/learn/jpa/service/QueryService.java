@@ -12,4 +12,6 @@ public interface QueryService {
 
 	void delete(long seq);
 
+	QueryTest findBySeq(long seq);
+
 }

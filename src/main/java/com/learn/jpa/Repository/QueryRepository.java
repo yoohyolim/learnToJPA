@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface QueryRepository extends CrudRepository<QueryTest, Long> {
 
 	void deleteBySeq(long seq);
+
+	QueryTest findBySeq(long seq);
 }

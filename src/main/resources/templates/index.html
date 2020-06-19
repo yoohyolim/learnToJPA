@@ -1,9 +1,492 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org"  xml:lang="ko">
 <head>
 	<title>JPA 테스트</title>
+	<link rel="stylesheet" type="text/css" href="/css/reset.css">
+	<style>
+		body
+		{
+			background-color: rgba(255,0,0,0.2);
+		}
+		.wrap
+		{
+			min-height: 937px;
+		}
+
+		/* 헤더 */
+		.wrap .header {}
+
+		/* 컨테이너 */
+		.wrap .container {}
+
+		/* lnb */
+		.wrap .container .lnb {}
+
+		/* contents */
+		.wrap .container .contents {}
+
+		.btn_area
+		{
+			position: relative;
+			margin: 200px auto;
+			background-color: #FFFFFF;
+			width: 600px;
+			height: 200px;
+			opacity: 0.7;
+			box-shadow: 0 0 10px rgba(0,0,0,0.5);
+			text-align: center;
+		}
+
+		.btn_area::after
+		{
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		.btn_area .btn
+		{
+			float: left;
+			width: 33.3333%;
+			height: 100%;
+		}
+
+		.btn_area .btn a.icon
+		{
+			display: block;
+			margin: 40px auto 0;
+			width: 80px;
+			height: 80px;
+			border: 1px solid bisque;
+			cursor: pointer;
+		}
+
+		.btn_area .btn span.name
+		{
+			display: block;
+			margin-top: 20px;
+		}
+
+		.btn_area .btn:nth-child(1) a.icon
+		{
+			background: url(/images/icon/insert-white.png) no-repeat center;
+		}
+
+		.btn_area .btn:nth-child(2) a.icon
+		{
+			background: url(/images/icon/modify-white.png) no-repeat center;
+		}
+
+		.btn_area .btn:nth-child(3) a.icon
+		{
+			background: url(/images/icon/delete-white.png) no-repeat center;
+		}
+
+		.btn_area .btn:nth-child(1) a.icon:hover
+		{
+			background: url(/images/icon/insert-black.png) no-repeat center;
+		}
+
+		.btn_area .btn:nth-child(2) a.icon:hover
+		{
+			background: url(/images/icon/modify-black.png) no-repeat center;
+		}
+
+		.btn_area .btn:nth-child(3) a.icon:hover
+		{
+			background: url(/images/icon/delete-black.png) no-repeat center;
+		}
+
+		.btn_area .btn .form_area {
+			display: block;
+			position: absolute;
+			top: 100%;
+			margin-top: -20px;
+			width: 500px;
+			height: 550px;
+			background-color: bisque;
+			padding: 20px;
+			font-size: 13.5px;
+		}
+
+		.btn_area .btn .form_area::before
+		{
+			content: "";
+			position: absolute;
+			top: -7px;
+			width: 15px;
+			height: 15px;
+			background-color: bisque;
+			transform: rotate(45deg);
+			right: 240px;
+		}
+
+		.btn_area .btn .form_area .form_close
+		{
+			margin-left: 440px;
+			width: 20px;
+			height: 20px;
+			display: block;
+			background-image: url(/images/icon/close-white.png);
+			position: absolute;
+		}
+
+		.btn_area .btn .form_area .form_close:hover
+		{
+			background-image: url(/images/icon/close-black.png);
+		}
+
+		.btn_area .btn .form_area form
+		{
+			margin-top: 15px;
+		}
+
+		.btn_area .btn .form_area .table_title span
+		{
+			display: block;
+			float: left;
+		}
+
+		.btn_area .btn .form_area .table_area
+		{
+			width: 465px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			height: 485px;
+			margin-top: 30px;
+		}
+
+		.btn_area .btn .form_area .table_area .data_table tbody tr
+		{
+			cursor: pointer;
+		}
+
+		.btn_area .btn .form_area .table_area .data_table tbody tr td:nth-child(1)
+		{
+			width: 35px;
+		}
+
+		.btn_area .btn .form_area .table_area .data_table tbody tr td:nth-child(2)
+		{
+			width: 195px;
+		}
+
+		.btn_area .btn .form_area .table_area .data_table tbody tr td:nth-child(3)
+		{
+			width: 80px;
+		}
+
+		.btn_area .btn .form_area .table_area .data_table tbody tr td:nth-child(4)
+		{
+			width: 135px;
+		}
+
+		.btn_area .btn:nth-child(1) .form_area {
+			left: -150px;
+			display: none;
+		}
+
+		.btn_area .btn:nth-child(2) .form_area {
+			left: 50%;
+			transform: translate(-50%,0);
+			display: none;
+		}
+
+		.btn_area .btn:nth-child(3) .form_area {
+			right: -150px;
+			display: none;
+		}
+
+		.btn_area .btn .form_area .input_box:nth-child(-n+3)
+		{
+			padding-bottom: 15px;
+			border-bottom: 1px solid rgba(0,0,0,0.3);
+		}
+
+		.btn_area .btn .form_area .input_box > span
+		{
+			float:left;
+		}
+
+		.btn_area .btn .form_area .input_box > label > input {
+			width: 100%;
+			height: 30px;
+			display: block;
+			background-color: #FFFFFF;
+			border: 1px solid gray;
+			margin-top: 10px;
+		}
+
+
+		.btn_area .btn .form_area .input_box > label > textarea
+		{
+			width: 100%;
+			height: 250px;
+			background-color: #FFFFFF;
+			border: 1px solid gray;
+			margin-top: 10px;
+
+		}
+
+		.astro
+		{
+			color: #FFA500;
+			font-weight: bold;
+		}
+
+
+		.btn_area .btn .form_area input[type=button]
+		{
+			display: block;
+			width: 65px;
+			height: 25px;
+			margin-top: 13px;
+			margin-left: 395px;
+			background-color: rgba(255,255,255,0.6);
+			border: 1px solid #FFFFFF;
+			color: gray;
+		}
+
+		.btn_area .btn .form_area table *
+		{
+			letter-spacing: -0.7px;
+		}
+
+		.btn_area .btn .form_area table tr
+		{
+			height: 30px;
+		}
+
+		.btn_area .btn .form_area table td
+		{
+			vertical-align: middle;
+		}
+
+		.btn_area .btn .form_area table tbody tr
+		{
+			border-top: 1px solid rgba(0,0,0,0.2);
+		}
+
+	</style>
 </head>
 <body>
-<button onclick="location.href='/jpa/test/insert'">JPA INSERT 테스트하기</button>
+	<div class="wrap">
+		<div class="header" id="header">
+
+		</div>
+		<div class="container">
+			<div class="lnb">
+
+			</div>
+			<div class="contents">
+				<div class="btn_area">
+					<div class="btn">
+						<a class="icon" data-type="insert"></a>
+						<span class="name">INSERT</span>
+
+						<div class="form_area" id="insertPop">
+							<a class="insert_form_close form_close"></a>
+							<form action="/jpa/saveAjax" method="post" th:object="${queryTest}" id="insertForm">
+								<div class="input_box">
+									<span>작성자<span class="astro">*</span> <span id="writerLength">0/20</span></span><br>
+									<label>
+										<input type="text" id="writer" th:field="*{writer}" maxlength="20" placeholder="작성자를 입력해주세요. 최대 20글자">
+									</label>
+								</div><br>
+								<div class="input_box">
+									<span>제목<span class="astro">*</span> <span id="titleLength">0/50</span></span><br>
+									<label>
+										<input type="text" id="title" th:field="*{title}" maxlength="20" placeholder="제목을 입력해주세요. 최대 50글자">
+									</label>
+								</div><br>
+								<div class="input_box">
+									<span>내용<span class="astro">*</span> <span id="contentsLength">0/255</span></span><br>
+									<label for="contents">
+										<textarea id="contents" th:field="*{contents}" maxlength="255" placeholder="내용을 적어주세요. 최대 255글자"></textarea>
+									</label>
+								</div>
+								<input type="button" id="insert_submit" value="등록">
+							</form>
+						</div>
+					</div>
+					<div class="btn">
+						<a class="icon" data-type="update"></a>
+						<span class="name">UPDATE</span>
+
+						<div class="form_area" id="updatePop">
+							<a class="update_form_close form_close"></a>
+							<div class="table_title">
+								<span style="width: 35px;">번호</span>
+								<span style="width: 205px;">제목</span>
+								<span style="width: 80px;">작성자</span>
+								<span style="width: 140px;">작성일시</span>
+							</div>
+							<div class="table_area">
+								<table class="data_table">
+									<tbody>
+										<tr class="update_list" th:each="list:${datalist}" th:value="${list.getSeq()}">
+											<td th:text="${list.getSeq()}"></td>
+											<td th:text="${list.getTitle()}"></td>
+											<td th:text="${list.getWriter()}"></td>
+											<td th:text="${#temporals.format(list.getCreated(), 'yyyy-MM-dd HH:mm')}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="btn">
+						<a class="icon" data-type="delete"></a>
+						<span class="name">DELETE</span>
+
+						<div class="form_area" id="deletePop">
+							<a class="delete_form_close form_close"></a>
+							<div class="table_title">
+								<span style="width: 35px;">번호</span>
+								<span style="width: 205px;">제목</span>
+								<span style="width: 80px;">작성자</span>
+								<span style="width: 140px;">작성일시</span>
+							</div>
+							<div class="table_area">
+								<table class="data_table">
+									<tbody>
+									<tr class="delete_list" th:each="list:${datalist}" th:value="${list.getSeq()}">
+										<td th:text="${list.getSeq()}"></td>
+										<td th:text="${list.getTitle()}"></td>
+										<td th:text="${list.getWriter()}"></td>
+										<td th:text="${#temporals.format(list.getCreated(), 'yyyy-MM-dd HH:mm')}"></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer>
+
+		</footer>
+	</div>
+<!-- 제이쿼리 -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- ajaxForm -->
+<script src="http://malsup.github.com/jquery.form.js" type="text/javascript"></script>
+<script>
+	$(function(){
+		$('.icon').on("click", function(){
+			if($(this).data("type") == "insert"){
+				if($('#insertPop').css("display") != "none"){
+					if(confirm("작성중인 내용이 있다면 삭제됩니다. 정말로 팝업을 닫으시겠습니까?")){
+						$('.icon:eq(0)').css("background", "url(/images/icon/insert-white.png) no-repeat center");
+						$('#insertPop').css("display", "none");
+						$('#insertPop input:not([type=submit])').val("");
+						$('#insertPop textarea').val("");
+					}
+				}else{
+					$(this).css("background", "url(/images/icon/insert-black.png) no-repeat center");
+					$('#insertPop').css("display", "block");
+				}
+			}else if($(this).data("type") == "update"){
+				if($('#updatePop').css("display") != "none") {
+					$('.icon:eq(1)').css("background", "url(/images/icon/modify-white.png) no-repeat center");
+					$('#updatePop').css("display", "none");
+				}else{
+					$(this).css("background", "url(/images/icon/modify-black.png) no-repeat center");
+					$('#updatePop').css("display", "block");
+				}
+			}else if($(this).data("type") == "delete"){
+				if($('#deletePop').css("display") != "none") {
+					$('.icon:eq(2)').css("background", "url(/images/icon/delete-white.png) no-repeat center");
+					$('#deletePop').css("display", "none");
+				}else{
+					$(this).css("background", "url(/images/icon/delete-black.png) no-repeat center");
+					$('#deletePop').css("display", "block");
+				}
+			}
+		});
+
+		//INSERT 팝업 닫기
+		$('.insert_form_close').on("click", function(){
+			if(confirm("작성중인 내용이 있다면 삭제됩니다. 정말로 팝업을 닫으시겠습니까?")){
+				$('.icon:eq(0)').css("background", "url(/images/icon/insert-white.png) no-repeat center");
+				$('#insertPop').css("display", "none");
+				$('#insertPop input:not([type=submit])').val("");
+				$('#insertPop textarea').val("");
+			}
+		});
+
+		//작성자 글씨 카운트
+		$('#writer').on("keyup", function(){
+			var cnt = $(this).val().length > 20 ? 20 : $(this).val().length;
+			$('#writerLength').text(cnt + "/20");
+		});
+
+		//제목 글씨 카운트
+		$('#title').on("keyup", function(){
+			var cnt = $(this).val().length > 50 ? 50 : $(this).val().length;
+			$('#titleLength').text(cnt + "/50");
+		});
+
+		//내용 글씨 카운트
+		$('#contents').on("keyup", function(){
+			var cnt = $(this).val().length > 255 ? 255 : $(this).val().length;
+			$('#contentsLength').text(cnt + "/255");
+		});
+
+		//INSERT 팝업 닫기
+		$('.update_form_close').on("click", function(){
+			$('.icon:eq(1)').css("background", "url(/images/icon/modify-white.png) no-repeat center");
+			$('#updatePop').css("display", "none");
+		});
+
+		//DELETE 팝업 닫기
+		$('.delete_form_close').on("click", function(){
+			$('.icon:eq(2)').css("background", "url(/images/icon/delete-white.png) no-repeat center");
+			$('#deletePop').css("display", "none");
+		});
+	})
+
+	$('#insert_submit').on("click", function(){
+		if( !stringCheck($('#writer').val()) ){
+			alert("작성자는 필수입력입니다.");
+			$('#writer').focus();
+			return false;
+		}
+		if( !stringCheck($('#title').val()) ){
+			alert("제목은 필수입력입니다.");
+			$('#title').focus();
+			return false;
+		}
+		if( !stringCheck($('#contents').val()) ){
+			alert("내용은 필수입력입니다.");
+			$('#contents').focus();
+			return false;
+		}
+		$('#insertForm').ajaxForm({
+			success : function(result) {
+				alert(result);
+				  if(result) {
+				  	alert("등록 성공");
+				  	window.location.reload();
+				  }else{
+				  	alert("등록 실패");
+				  	return false;
+				  }
+			},
+			error : function() {
+				alert("등록 실패");
+				return false;
+			}
+		})
+	});
+
+	function stringCheck(str){
+		if(str == undefined) return false;
+		if(str == null) return false;
+		if(str == "") return false;
+		return true;
+	}
+</script>
 </body>
 </html>
